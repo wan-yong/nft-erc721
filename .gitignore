@@ -1,0 +1,5 @@
+.idea
+application/node_modules
+application/config/default.env
+.env
+chaincode-javascript
