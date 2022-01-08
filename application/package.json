@@ -1,0 +1,40 @@
+{
+  "name": "minty",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/minty.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint *.js",
+    "pretest": "npm run lint"
+  },
+  "bin": {
+    "minty": "src/index.js"
+  },
+  "keywords": [],
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.3",
+    "eslint": "^7.32.0"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "cids": "^1.1.6",
+    "commander": "^7.1.0",
+    "concurrently": "^6.0.0",
+    "fabric-ca-client": "^2.2.4",
+    "fabric-network": "^2.2.4",
+    "getconfig": "^4.5.0",
+    "go-ipfs": "^0.8.0",
+    "inquirer": "^8.0.0",
+    "ipfs-http-client": "^50.1.2",
+    "it-all": "^1.0.6",
+    "json-colorizer": "^2.2.2",
+    "multiaddr": "^8.1.2"
+  }
+}
