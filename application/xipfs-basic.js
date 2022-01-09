@@ -2,8 +2,8 @@
 
 /* import the ipfs-http-client library */
 const { create } = require('ipfs-http-client')
-//const { all } = require('it-all')
-const uint8ArrayConcat = require('uint8arrays/concat')
+const concatBuffers = require('concat-buffers')
+const { utf8ArrayToString, base64Encode } = require('base64-utf8-array')
 
 async function main() {
 
@@ -18,15 +18,26 @@ async function main() {
  // const added = await client.add(inputStr)
  // console.log(`*** Result: ${added.path}`)
 
-  const arr = uint8ArrayConcat(await iterator(client.cat(`QmNfweRQ2EqR1PPz1wAC8m7zu6j3nbvDkbt38e3AJYGqUD`)))
-  console.log(`*** Arr: ${arr}`)
+  const concatBytes = concatBuffers(await iterator(client.cat(`QmNfweRQ2EqR1PPz1wAC8m7zu6j3nbvDkbt38e3AJYGqUD`)))
+  const arrStr = utf8ArrayToString(concatBytes)
+  console.log(`*** Arr: ${arrStr}`)
 }
 
-async function iterator(source){
-const arr = []
+//////////////////////////////////////////////
+// -------- Iterator helpers
+//////////////////////////////////////////////
 
-for await (const entry of source) {
-  arr.push(entry)
+/**
+ *  * Collects all values from an (async) iterable into an array and returns it.
+ *  
+ *   @template T
+ *   @param {AsyncIterable<T>|Iterable<T>} source
+*/
+async function iterator(source) {
+  const arr = []
+
+  for await (const entry of source) {
+    arr.push(entry)
   }
 
   return arr

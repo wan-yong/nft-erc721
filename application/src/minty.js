@@ -3,10 +3,9 @@ const path = require('path')
 
 const { CID } = require('cids')
 const { create } = require('ipfs-http-client')
-const { all } = require('it-all')
 
-const uint8ArrayConcat = require('uint8arrays/concat')
-const uint8ArrayToString = require('uint8arrays/to-string')
+const concatBuffers = require('concat-buffers')
+const { utf8ArrayToString, base64Encode } = require('base64-utf8-array')
 
 const { Gateway, Wallets } = require('fabric-network')
 const { buildCCPOrg1, buildWallet } = require('./enroll/utils/AppUtil.js')
@@ -122,8 +121,8 @@ class Minty {
 
         // TODO - UUID generator for NFT
         // mint a new token referencing the metadata URI
-	// the tokenId MUST be 'int' to follow the erc721 rule
-	// there is an 'int' check in the chaincode
+	    // the tokenId MUST be 'int' to follow the erc721 rule
+	    // there is an 'int' check in the chaincode
         const tokenId = `${Date.now()}`
 	    await this.mintToken(tokenId, metadataURI)
 	
@@ -374,7 +373,7 @@ class Minty {
      */
     async getIPFS(cidOrURI) {
         const cid = stripIpfsUriPrefix(cidOrURI)
-        return uint8ArrayConcat(await all(this.ipfs.cat(cid)))
+        return concatBuffers(await iterator(this.ipfs.cat(cid)))
     }
 
     /**
@@ -385,7 +384,7 @@ class Minty {
      */
     async getIPFSString(cidOrURI) {
         const bytes = await this.getIPFS(cidOrURI)
-        return uint8ArrayToString(bytes)
+        return utf8ArrayToString(bytes)
     }
 
     /**
@@ -396,7 +395,7 @@ class Minty {
      */
     async getIPFSBase64(cidOrURI) {
         const bytes = await this.getIPFS(cidOrURI)
-        return uint8ArrayToString(bytes, 'base64')
+        return base64Encode(bytes)
     }
 
     /**
@@ -571,6 +570,27 @@ function extractCID(cidOrURI) {
 function prettyJSONString(inputString) {
 	return JSON.stringify(JSON.parse(inputString), null, 2);
 }
+
+//////////////////////////////////////////////
+// -------- Iterator helpers
+//////////////////////////////////////////////
+
+/**
+ *  * Collects all values from an (async) iterable into an array and returns it.
+ *  
+ *   @template T
+ *   @param {AsyncIterable<T>|Iterable<T>} source
+*/
+async function iterator(source) {
+  const arr = []
+
+  for await (const entry of source) {
+    arr.push(entry)
+  }
+
+  return arr
+}
+
 
 //////////////////////////////////////////////
 // -------- Exports
