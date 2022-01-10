@@ -1,6 +1,5 @@
 .idea
+.env
 application/node_modules
 application/wallet
-application/config/default.env
-.env
 chaincode-javascript

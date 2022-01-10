@@ -37,7 +37,7 @@ async function main() {
         .action(getNFT)
 
 
-    program.command('transfer <token-id> <to-address>')
+    program.command('transfer <token-id> <from-address> <to-address>')
         .description('transfer an NFT to a new owner')
         .action(transferNFT)
 
@@ -108,11 +108,11 @@ async function getNFT(tokenId, options) {
     console.log(colorize(JSON.stringify(nft.metadata), colorizeOptions))
 }
 
-async function transferNFT(tokenId, toAddress) {
+async function transferNFT(tokenId, fromAddress, toAddress) {
     const minty = await MakeMinty()
 
-    await minty.transferToken(tokenId, toAddress)
-    console.log(`🌿 Transferred token ${chalk.green(tokenId)} to ${chalk.yellow(toAddress)}`)
+    await minty.transferToken(tokenId, fromAddress, toAddress)
+    console.log(`🌿 Transferred token ${chalk.green(tokenId)} from ${chalk.yellow(fromAddress)} to ${chalk.yellow(toAddress)}`)
 }
 
 async function pinNFTData(tokenId) {

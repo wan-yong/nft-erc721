@@ -371,8 +371,7 @@ class TokenERC721Contract extends Contract {
         if (!nftBytes || nftBytes.length === 0) {
             throw new Error(`The tokenId ${tokenId} is invalid. It does not exist`);
         }
-        const nft = JSON.parse(nftBytes.toString());
-        return nft;
+        return JSON.parse(nftBytes.toString());
     }
 
     async _nftExists(ctx, tokenId) {
@@ -398,8 +397,7 @@ class TokenERC721Contract extends Contract {
     // Users can use this function to get their own account id, which they can then give to others as the payment address
     async ClientAccountID(ctx) {
         // Get ID of submitting client identity
-        const clientAccountID = ctx.clientIdentity.getID();
-        return clientAccountID;
+        return ctx.clientIdentity.getID();
     }
 }
 

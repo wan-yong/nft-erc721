@@ -208,10 +208,6 @@ class Minty {
                 nft.assetDataBase64 = await this.getIPFSBase64(metadata.image)
             }
         }
-
-	//console.log(`\n--> NFT Retreival, get information about an existing token.`)
-	//console.log(`*** Result: nft ${prettyJSONString(JSON.stringify(nft))}`)
-
         return nft
     }
 
@@ -323,8 +319,34 @@ class Minty {
 		*y---------Smart Contract*/
     }
 
-    async transferToken(tokenId, toAddress) {
-        
+    async transferToken(tokenId, fromAddress, toAddress) {
+		try {
+			const gateway = new Gateway();
+			await gateway.connect(this.ccp, {
+				wallet: this.wallet,
+				identity: config.org1UserId,
+				discovery: { enabled: true, asLocalhost: true } // using asLocalhost as this gateway is using a fabric network deployed locally
+			});
+
+			// Build a network instance based on the channel where the smart contract is deployed
+			const network = await gateway.getNetwork(config.channelName);
+
+			// Get the contract from the network.
+			const contract = network.getContract(config.chaincodeName);
+			
+			console.log('\n--> Submit Transaction: TransferFrom, transfer token');
+			const resultBuf = await contract.submitTransaction('TransferFrom', fromAddress, toAddress, tokenId);
+			console.log('*** Result: committed');
+			if (`${resultBuf}` !== '') {
+				console.log(`*** Result: ${prettyJSONString(resultBuf.toString())}`);
+			}
+			
+			// This will close all connections to the network
+			gateway.disconnect();
+		} catch (error) {
+			console.error(`******** FAILED to transfer token: ${error}`);
+		}
+
         /*x---------Smart Contract
         const fromAddress = await this.getTokenOwner(tokenId)
 
@@ -340,7 +362,7 @@ class Minty {
     }
 	
     //////////////////////////////////////////////
-    // --- Smart Contract connection info helpers
+    // --- Smart Contract Utils
     //////////////////////////////////////////////
 
     /**
@@ -353,12 +375,13 @@ class Minty {
 	    const ccp = buildCCPOrg1();
 
 	    // setup the wallet to hold the credentials of the application user
-            const walletPath = path.join(__dirname, '..', 'wallet/org1');
+        const walletPath = path.join(__dirname, '..', 'wallet/org1');
 	    console.log(`*** walletPath: ${__dirname}`);
 	    const wallet = await buildWallet(Wallets, walletPath);
 			
 	return {ccp, wallet}
 	}
+
 
     //////////////////////////////////////////////
     // --------- IPFS helpers
