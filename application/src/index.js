@@ -93,14 +93,15 @@ async function getNFT(tokenId, options) {
         ['Token ID:', chalk.green(nft.tokenId)],
         ['Owner Address:', chalk.yellow(nft.ownerAddress)],
     ]
-    if (nft.creationInfo) {
-        output.push(['Creator Address:', chalk.yellow(nft.creationInfo.creatorAddress)])
-        output.push(['Block Number:', nft.creationInfo.blockNumber])
-    }
     output.push(['Metadata Address:', chalk.blue(nft.metadataURI)])
     output.push(['Metadata Gateway URL:', chalk.blue(nft.metadataGatewayURL)])
     output.push(['Asset Address:', chalk.blue(nft.assetURI)])
     output.push(['Asset Gateway URL:', chalk.blue(nft.assetGatewayURL)])
+    
+    if (nft.assetDataBase64) {
+        output.push(['Asset Data Base64:', chalk.yellow(nft.assetDataBase64)])
+    }
+
     alignOutput(output)
 
     console.log('NFT Metadata:')

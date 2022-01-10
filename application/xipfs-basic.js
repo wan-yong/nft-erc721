@@ -18,9 +18,15 @@ async function main() {
  // const added = await client.add(inputStr)
  // console.log(`*** Result: ${added.path}`)
 
-  const concatBytes = concatBuffers(await iterator(client.cat(`QmNfweRQ2EqR1PPz1wAC8m7zu6j3nbvDkbt38e3AJYGqUD`)))
+  const cidMetadata = 'bafybeic3ui4dj5dzsvqeiqbxjgg3fjmfmiinb3iyd2trixj2voe4jtefgq/metadata.json' 
+  const concatMetadataBytes = concatBuffers(await iterator(client.cat(cidMetadata)))
+  const arrMetadataStr = utf8ArrayToString(concatMetadataBytes)
+  console.log(`*** Metadata: ${arrMetadataStr}\n`)
+  
+  const cid = 'bafybeihhii26gwp4w7b7w7d57nuuqeexau4pnnhrmckikaukjuei2dl3fq/ticket.txt' 
+  const concatBytes = concatBuffers(await iterator(client.cat(cid)))
   const arrStr = utf8ArrayToString(concatBytes)
-  console.log(`*** Arr: ${arrStr}`)
+  console.log(`*** NFT: ${arrStr}`)
 }
 
 //////////////////////////////////////////////

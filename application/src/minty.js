@@ -187,7 +187,7 @@ class Minty {
      * 
      * @typedef {object} NFTInfo
      * @property {string} tokenId
-	 * @property {string} owner
+     * @property {string} ownerAddress
      * @property {object} metadata
      * @property {string} metadataURI
      * @property {string} metadataGatewayURI
@@ -197,10 +197,9 @@ class Minty {
      * @returns {Promise<NFTInfo>}
      */
     async getNFT(tokenId, opts) {
-        const {owner, metadata, metadataURI} = await this.getNFTMetadata(tokenId)
+        const {ownerAddress, metadata, metadataURI} = await this.getNFTMetadata(tokenId)
         const metadataGatewayURL = makeGatewayURL(metadataURI)
-        const nft = {tokenId, owner, metadata, metadataURI, metadataGatewayURL}
-
+        const nft = {tokenId, ownerAddress, metadata, metadataURI, metadataGatewayURL}
         const {fetchAsset} = (opts || {})
         if (metadata.image) {
             nft.assetURI = metadata.image
@@ -210,6 +209,9 @@ class Minty {
             }
         }
 
+	//console.log(`\n--> NFT Retreival, get information about an existing token.`)
+	//console.log(`*** Result: nft ${prettyJSONString(JSON.stringify(nft))}`)
+
         return nft
     }
 
@@ -217,7 +219,7 @@ class Minty {
      * Fetch the NFT metadata for a given token id.
      * 
      * @param tokenId - the id of an existing token
-     * @returns {Promise<{owner: string, metadata: string, metadataURI: string}>} - resolves to an object containing the metadata and
+     * @returns {Promise<{ownerAddress: string, metadata: string, metadataURI: string}>} - resolves to an object containing the metadata
      * metadata URI. Fails if the token does not exist, or if fetching the data fails.
      */
     async getNFTMetadata(tokenId) {
@@ -240,33 +242,30 @@ class Minty {
                         const metadataURI = resultMetadataURI.toString()
 			console.log(`*** Result metadataURI: ${metadataURI}`)
 
-			console.log('\n--> Evaluate Transaction: OwnerOf, returns owner of a given tokenID')
+			console.log('\n--> Evaluate Transaction: OwnerOf, returns ownerAddress of a given tokenID')
 			const resultOwner = await contract.evaluateTransaction('OwnerOf', tokenId)
-                        const owner = resultOwner.toString()
-			console.log(`*** Result owner: ${owner}`)
+                        const ownerAddress = resultOwner.toString()
+			console.log(`*** Result ownerAddress: ${ownerAddress}`)
 			
-			// This will close all connections to the network
+			// This will close all connections to the fabric network
 			gateway.disconnect()
                         
 			console.log('\n--> Evaluate Transaction: getIPFSJSON, returns metadata of a given tokenID')
 			const metadata = await this.getIPFSJSON(metadataURI)
 			console.log(`*** Result metadata: ${metadata}`)
                         
-			return {owner, metadata, metadataURI}
+			return {ownerAddress, metadata, metadataURI}
 	
 		} catch (error) {
 			console.error(`******** FAILED to show tokens: ${error}`)
 		}
     }
 
-    //////////////////////////////////////////////
-    // --------- Smart contract interactions
-    //////////////////////////////////////////////
 
     /**
      * Create a new NFT token that references the given metadata CID.
      * 
-	 * @param {String} tokenId - Unique ID of the non-fungible token to be minted
+     * @param {String} tokenId - Unique ID of the non-fungible token to be minted
      * @param {String} metadataURI - URI containing metadata of the minted non-fungible token
      */
     async mintToken(tokenId, metadataURI) {
