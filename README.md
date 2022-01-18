@@ -2,10 +2,8 @@
 
 ## Deploy the chaincode
 
-```
-# Choose your method to delpoy either in test-network or a kube based env.
-N/A
-```
+Delpoy the Fabric `test network` sample either in docker-compose or a kube based env.
+
 
 ## CLI introduce
 
@@ -45,7 +43,31 @@ To install and run, you must have NPM installed. The below is tested and passed 
 
 ### Config
 
-TODO
+```
+TODO: Existing bug is found when using the local IPFS node.
+
+Please use the external ipfs node as the below.
+```
+
+Perfer to use an external ipfs provider. If a local ipfs node is setup, make sure the `5001` and `8080` ports are permitted. Sometimes the China mainland hosts are not stable for the ipfs related service.
+
+Open `./application/config` folder, edit `default.js`. If you want to use the PIN service, please also follow the instructions in `nft.storage.env.example` or `pinata.env.example` files.
+
+```javascript
+ 
+    // Using a external ipfs provider
+    ipfsApiUrl: 'https://ipfs.infura.io:5001/api/v0',
+
+    // Using a external gateway
+    ipfsGatewayUrl: 'https://ipfs.infura.io:8080/ipfs',
+
+	// The connection profiles when the smart contract is deployed.
+	channelName: 'mychannel',
+	chaincodeName: 'token_erc721',
+
+	mspOrg1: 'Org1MSP',
+	org1UserId: 'minter',
+```
 
 ### Commands
 
@@ -128,16 +150,16 @@ NFT Metadata:
 
 ### Pin IPFS assets for an NFT
 
+```
+NOTE: If we use an external IPFS service, no need to pin assets by ourself. It is already done by the service provider.
+```
+
 To make the data highly available, you can request that a [Remote Pinning Service](https://ipfs.github.io/pinning-services-api-spec) like [Pinata](https://pinata.cloud/) or [nft.storage](https://nft.storage) store a copy of your IPFS data on their IPFS nodes.
 
 To pin the data for token, use the `minty pin` command:
 
 ```shell
 minty pin 11641904109263
-
-> Pinning asset data (ipfs://bafybeihhii26gwp4w7b7w7d57nuuqeexau4pnnhrmckikaukjuei2dl3fq/ticket.txt) for token id 1....
-> Pinning metadata (ipfs://bafybeic3ui4dj5dzsvqeiqbxjgg3fjmfmiinb3iyd2trixj2voe4jtefgq/metadata.json) for token id 1...
-> 🌿 Pinned all data for token id 1
 ```
 
 The `pin` command looks for some configuration info to connect to the remote pinning service. See the [Configuration section](#config) above for details.
