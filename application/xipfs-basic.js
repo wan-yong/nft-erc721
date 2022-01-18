@@ -8,7 +8,9 @@ const { utf8ArrayToString, base64Encode } = require('base64-utf8-array')
 async function main() {
 
   /* Create an instance of the client */
-  const client = create('https://ipfs.infura.io:5001/api/v0');
+  //const client = create('https://ipfs.infura.io:5001/api/v0');
+  const client = create('http://localhost:5002/api/v0')
+  //const client = create()
 
   /* upload the file */
   //const added = await client.add(file);
@@ -18,6 +20,7 @@ async function main() {
  // const added = await client.add(inputStr)
  // console.log(`*** Result: ${added.path}`)
 
+ /*
   const cidMetadata = 'bafybeic3ui4dj5dzsvqeiqbxjgg3fjmfmiinb3iyd2trixj2voe4jtefgq/metadata.json' 
   const concatMetadataBytes = concatBuffers(await iterator(client.cat(cidMetadata)))
   const arrMetadataStr = utf8ArrayToString(concatMetadataBytes)
@@ -27,6 +30,9 @@ async function main() {
   const concatBytes = concatBuffers(await iterator(client.cat(cid)))
   const arrStr = utf8ArrayToString(concatBytes)
   console.log(`*** NFT: ${arrStr}`)
+ */
+  console.log(`***ipfs support  methods:`)
+  console.log(await client.version())
 }
 
 //////////////////////////////////////////////

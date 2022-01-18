@@ -488,7 +488,7 @@ class Minty {
      */
     async isPinned(cid) {
         if (typeof cid === 'string') {
-            cid = new CID.parse(cid)
+            cid = CID.parse(cid)
         }
 
         const opts = {
@@ -582,7 +582,8 @@ function makeGatewayURL(ipfsURI) {
 function extractCID(cidOrURI) {
     // remove the ipfs:// prefix, split on '/' and return first path component (root CID)
     const cidString = stripIpfsUriPrefix(cidOrURI).split('/')[0]
-    return new CID.parse(cidString)
+    console.log(`*****cidString: ${cidString}`)
+    return CID.parse(cidString)
 }
 
 //////////////////////////////////////////////

@@ -11,28 +11,28 @@ const config = {
     },
 
     // If you're running IPFS on a non-default port, update this URL. If you're using the IPFS defaults, you should be all set.
-    // ipfsApiUrl: 'http://localhost:5001',
+    ipfsApiUrl: 'http://localhost:5001',
    
     // Using a external ipfs provider
-    ipfsApiUrl: 'https://ipfs.infura.io:5001/api/v0',
+    // ipfsApiUrl: 'https://ipfs.infura.io:5001/api/v0',
 
     // If you're running the local IPFS gateway on a non-default port, or if you want to use a public gatway when displaying IPFS gateway urls, edit this.
-    // ipfsGatewayUrl: 'http://localhost:8080/ipfs',
+    ipfsGatewayUrl: 'http://localhost:8080/ipfs',
     
     // Using a external gateway
-    ipfsGatewayUrl: 'https://ipfs.infura.io:8080/ipfs',
+    // ipfsGatewayUrl: 'https://ipfs.infura.io:8080/ipfs',
 	
 	
-	// The connection profiles when the smart contract is deployed.
-	channelName: 'mychannel',
-	chaincodeName: 'token_erc721',
+    // The connection profiles when the smart contract is deployed.
+    channelName: 'mychannel',
+    chaincodeName: 'token_erc721',
 
-	mspOrg1: 'Org1MSP',
-	org1UserId: 'minter',
+    mspOrg1: 'Org1MSP',
+    org1UserId: 'minter',
 	
-	// For futher use
-	caHostName: 'ca.org1.example.com',
-	affiliation: 'org1.department1',
+    // For futher use
+    caHostName: 'ca.org1.example.com',
+    affiliation: 'org1.department1',
 }
 
 module.exports = config
