@@ -61,12 +61,11 @@ Open `./application/config` folder, edit `default.js`. If you want to use the PI
     // Using a external gateway
     ipfsGatewayUrl: 'https://ipfs.infura.io:8080/ipfs',
 
-	// The connection profiles when the smart contract is deployed.
-	channelName: 'mychannel',
-	chaincodeName: 'token_erc721',
-
-	mspOrg1: 'Org1MSP',
-	org1UserId: 'minter',
+    // The connection profiles when the smart contract is deployed.
+    channelName: 'mychannel',
+    chaincodeName: 'token_erc721',
+    mspOrg1: 'Org1MSP',
+    org1UserId: 'minter',
 ```
 
 ### Commands
