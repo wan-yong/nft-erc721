@@ -59,6 +59,8 @@ async function main() {
 async function createNFT(imagePath, options) {
     const minty = await MakeMinty()
 
+    console.log(colorize(JSON.stringify(options), colorizeOptions))
+
     // prompt for missing details if not provided as cli args
     const answers = await promptForMissing(options, {
         name: {
@@ -88,6 +90,8 @@ async function getNFT(tokenId, options) {
     const { assetInfo: fetchAsset } = options
     const minty = await MakeMinty()
     const nft = await minty.getNFT(tokenId, {fetchAsset})
+
+    console.log(colorize(JSON.stringify(options), colorizeOptions))
 
     const output = [
         ['Token ID:', chalk.green(nft.tokenId)],

@@ -36,6 +36,7 @@
     "concat-buffers": "^1.0.0",
     "base64-utf8-array": "^1.0.0",
     "json-colorizer": "^2.2.2",
-    "multiaddr": "^8.1.2"
+    "multiaddr": "^8.1.2",
+    "express": "^4.17.2"
   }
 }
