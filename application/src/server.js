@@ -2,18 +2,19 @@ var express = require('express');
 var app = express();
 const {MakeMinty} = require('./minty')
 
-app.post('/add', function (req, res) {   
-   const data = createNFT(req.params.path, req.params.options);
-   res.end(data + "is created.");
-})
+app.use(express.json()) // 开启Express读取请求体JSON数据功能
 
-app.get('/:id', function (req, res) {
-   const data = getNFT(req.params.path, req.params.options);
+app.get('assets/:id', function (req, res) {
+   const options = {
+      id: req.params.id,
+      options: { assetInfo: Boolean(req.query.assetInfo==='true') }
+   }
+   const data = getNFT(req.params.id, options);
    res.end(JSON.stringify(data));
 })
 
 app.post('/transfer', function (req, res) {   
-   const data = transferNFT(req.params.path, req.params.from, req.params.to);
+   const data = transferNFT(req.body.id, req.body.from, req.body.to);
    res.end(JSON.stringify(data));
 })
 
@@ -22,17 +23,6 @@ var server = app.listen(8081, function () {
    var port = server.address().port
    console.log("Example app listening at http://%s:%s", host, port)
 })
-
-async function createNFT(imagePath, options) {
-    const minty = await MakeMinty()
-
-    const nft = await minty.createNFTFromAssetFile(imagePath, answers)
-    console.log('🌿 Minted a new NFT: ')
-    console.log('NFT Metadata:')
-    console.log(colorize(JSON.stringify(nft.metadata), colorizeOptions))
-
-    return nft.tokenId
-}
 
 async function getNFT(tokenId, options) {
     const { assetInfo: fetchAsset } = options
