@@ -88,10 +88,9 @@ async function createNFT(imagePath, options) {
 
 async function getNFT(tokenId, options) {
     const { assetInfo: fetchAsset } = options
+    console.log(colorize(JSON.stringify(options), colorizeOptions))
     const minty = await MakeMinty()
     const nft = await minty.getNFT(tokenId, {fetchAsset})
-
-    console.log(colorize(JSON.stringify(options), colorizeOptions))
 
     const output = [
         ['Token ID:', chalk.green(nft.tokenId)],

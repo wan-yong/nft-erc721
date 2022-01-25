@@ -4,18 +4,18 @@ const {MakeMinty} = require('./minty')
 
 app.use(express.json()) // 开启Express读取请求体JSON数据功能
 
-app.get('assets/:id', function (req, res) {
+app.get('/assets/:id', async function (req, res) {
    const options = {
-      id: req.params.id,
-      options: { assetInfo: Boolean(req.query.assetInfo==='true') }
+      assetInfo: Boolean(req.query.assetInfo==='true')
    }
-   const data = getNFT(req.params.id, options);
-   res.end(JSON.stringify(data));
+   
+   result = await getNFT(req.params.id, options) 
+   res.end(JSON.stringify(result))
 })
 
-app.post('/transfer', function (req, res) {   
-   const data = transferNFT(req.body.id, req.body.from, req.body.to);
-   res.end(JSON.stringify(data));
+app.post('/transfer', async function (req, res) {   
+   const data = await transferNFT(req.body.id, req.body.from, req.body.to)
+   res.end(JSON.stringify(data))
 })
 
 var server = app.listen(8081, function () {
@@ -28,21 +28,22 @@ async function getNFT(tokenId, options) {
     const { assetInfo: fetchAsset } = options
     const minty = await MakeMinty()
     
-    const nft = await minty.getNFT(tokenId, {fetchAsset})
-    console.log('NFT Metadata:')
-    console.log(colorize(JSON.stringify(nft.metadata), colorizeOptions))
-
-    return nft
+    return(await minty.getNFT(tokenId, {fetchAsset}))
+    
 }
 
 async function transferNFT(tokenId, fromAddress, toAddress) {
     const minty = await MakeMinty()
 
-    await minty.transferToken(tokenId, fromAddress, toAddress)
-    console.log(`🌿 Transferred token ${chalk.green(tokenId)} from ${chalk.yellow(fromAddress)} to ${chalk.yellow(toAddress)}`)
-    return {
-       tokenid:tokenId,
-       from:fromAddress,
-       to:toAddress
+    if (await minty.transferToken(tokenId, fromAddress, toAddress)){
+    
+      return {
+         tokenid:tokenId,
+         from:fromAddress,
+         to:toAddress
+      }
+
+    } else { 
+	return { warnning: '*** Fail to transfer' } 
     }
 }

@@ -320,7 +320,8 @@ class Minty {
     }
 
     async transferToken(tokenId, fromAddress, toAddress) {
-		try {
+	    let result = false	
+	    try {
 			const gateway = new Gateway();
 			await gateway.connect(this.ccp, {
 				wallet: this.wallet,
@@ -335,17 +336,14 @@ class Minty {
 			const contract = network.getContract(config.chaincodeName);
 			
 			console.log('\n--> Submit Transaction: TransferFrom, transfer token');
-			const resultBuf = await contract.submitTransaction('TransferFrom', fromAddress, toAddress, tokenId);
-			console.log('*** Result: committed');
-			if (`${resultBuf}` !== '') {
-				console.log(`*** Result: ${prettyJSONString(resultBuf.toString())}`);
-			}
-			
+			result = await contract.submitTransaction('TransferFrom', fromAddress, toAddress, tokenId);
 			// This will close all connections to the network
-			gateway.disconnect();
+			gateway.disconnect()
 		} catch (error) {
-			console.error(`******** FAILED to transfer token: ${error}`);
+			console.error(`******** FAILED to transfer token: ${error}`)
 		}
+
+        return result	
 
         /*x---------Smart Contract
         const fromAddress = await this.getTokenOwner(tokenId)
