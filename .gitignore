@@ -1,5 +1,9 @@
-.idea
-.env
+
+# Dependency directories
 application/node_modules
 application/wallet
-chaincode-javascript
+application/package-lock.json
+chaincode-javascript/
+
+.idea
+.env

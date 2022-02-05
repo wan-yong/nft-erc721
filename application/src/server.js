@@ -4,6 +4,20 @@ const {MakeMinty} = require('./minty')
 
 app.use(express.json()) // 开启Express读取请求体JSON数据功能
 
+//all方法适用于所有的请求
+app.all("*",function(req,res,next){
+    //设置允许跨域的域名，*代表允许任意域名跨域
+    res.header("Access-Control-Allow-Origin","*");
+    //允许的header类型
+    res.header("Access-Control-Allow-Headers","*");
+    //跨域允许的请求方式
+    res.header("Access-Control-Allow-Methods","DELETE,PUT,POST,GET,OPTIONS");
+    if (req.method.toLowerCase() === 'options')
+        res.send(200);  //让options尝试请求快速结束
+    else
+        next();
+});
+
 app.get('/assets/:id', async function (req, res) {
    const options = {
       assetInfo: Boolean(req.query.assetInfo==='true')
