@@ -23,7 +23,7 @@ app.get('/assets/:id', async function (req, res) {
       assetInfo: Boolean(req.query.assetInfo==='true')
    }
    
-   result = await getNFT(req.params.id, options) 
+   const result = await getNFT(req.params.id, options) 
    res.end(JSON.stringify(result))
 })
 
@@ -42,8 +42,7 @@ async function getNFT(tokenId, options) {
     const { assetInfo: fetchAsset } = options
     const minty = await MakeMinty()
     
-    return(await minty.getNFT(tokenId, {fetchAsset}))
-    
+    return(minty.getNFT(tokenId, {fetchAsset}))
 }
 
 async function transferNFT(tokenId, fromAddress, toAddress) {
