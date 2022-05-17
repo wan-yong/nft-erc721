@@ -374,7 +374,7 @@ class Minty {
 
 	    // setup the wallet to hold the credentials of the application user
         const walletPath = path.join(__dirname, '..', 'wallet/org1');
-	    console.log(`*** walletPath: ${__dirname}`);
+	    console.log(`*** walletPath: ${walletPath}`);
 	    const wallet = await buildWallet(Wallets, walletPath);
 			
 	return {ccp, wallet}
