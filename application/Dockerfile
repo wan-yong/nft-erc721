@@ -1,5 +1,6 @@
 FROM node:14 AS build
 
+RUN apt-get update
 RUN apt-get install -y g++ make python3 dumb-init
 
 WORKDIR /app
