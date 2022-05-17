@@ -1,6 +1,6 @@
 FROM node:14 AS build
 
-RUN apk add --no-cache g++ make python3 dumb-init
+RUN apt-get install -y g++ make python3 dumb-init
 
 WORKDIR /app
 
