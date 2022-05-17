@@ -7,6 +7,8 @@ WORKDIR /app
 COPY --chown=node:node ../../test-network/organizations/peerOrganizations/ /app/test-network/organizations/peerOrganizations/
 COPY --chown=node:node ../../nft-erc721/application/ /app/nft-erc721/application/
 
+WORKDIR /app/nft-erc721/application/
+
 RUN npm ci
 RUN npm prune --production
 
